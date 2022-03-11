@@ -1,0 +1,58 @@
+#cloud-config
+
+# Prevent machine from joining ADO agent pool before tools are installed and available.
+bootcmd:
+  - mkdir -p /etc/systemd/system/walinuxagent.service.d
+  - echo "[Unit]\nAfter=cloud-final.service" > /etc/systemd/system/walinuxagent.service.d/override.conf
+  - sed "s/After=multi-user.target//g" /lib/systemd/system/cloud-final.service > /etc/systemd/system/cloud-final.service
+  - systemctl daemon-reload
+
+
+apt:
+    preserve_sources_list: true
+    sources:
+        hashicorp.list:
+            source: "deb https://apt.releases.hashicorp.com focal main"
+            key: | 
+                -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+                =emKC
+                -----END PGP PUBLIC KEY BLOCK-----
+        microsoft-azurecli.list:
+            source: "deb https://packages.microsoft.com/repos/azure-cli focal main"
+            key: |
+                -----BEGIN PGP PUBLIC KEY BLOCK-----
+                Version: GnuPG v1.4.7 (GNU/Linux)
+
+              
+                -----END PGP PUBLIC KEY BLOCK-----
+        microsoft-prod.list:
+            source: "deb https://packages.microsoft.com/ubuntu/20.04/prod focal main"
+            key: |
+                -----BEGIN PGP PUBLIC KEY BLOCK-----
+                Version: GnuPG v1.4.7 (GNU/Linux)
+
+                
+                -----END PGP PUBLIC KEY BLOCK-----
+        docker.list:
+            source: deb [arch=amd64] https://download.docker.com/linux/ubuntu $RELEASE stable
+            keyid: 
+
+groups:
+  - docker
+
+packages:
+ - unzip
+ - git
+ - wget
+ - apt-transport-https
+ - software-properties-common
+ - powershell
+ - azure-cli
+ - terraform
+ - npm
+ - ansible
+ - docker-ce
+ - docker-ce-cli
+ - packer
+ 
