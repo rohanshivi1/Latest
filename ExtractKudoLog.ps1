@@ -2,7 +2,7 @@
     .DESCRIPTION
         Extracts Kudu log file from an Azure App Service to local disk
     .NOTES
-        AUTHOR: David P
+        AUTHOR: Rohan Sharma
         LASTEDIT: 25 May 2021
 
         Please complete the parameters  
